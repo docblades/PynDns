@@ -1,5 +1,5 @@
 import unittest
-import pyndns
+from pyndns import pyndns
 
 class ConfigJSONTests(unittest.TestCase):
 
