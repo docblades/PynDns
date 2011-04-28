@@ -15,5 +15,7 @@ def get_ip_from_dyndns():
     ip_addr = ip_match.group(1)
     return ip_addr
 
+if __name__ == "__main__":
+    config = data.Config()
     
-        
+    

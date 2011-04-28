@@ -1,3 +1,3 @@
-import pyndns_test
+import config_test
 
 
