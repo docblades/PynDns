@@ -1,7 +1,9 @@
 """
 PynDns - Data persistence
 """
-import json, sqlite3
+import json, sqlite3, logging
+
+logger = logging.getLogger(__name__)
 
 class Config(object):
     hostname = None
@@ -31,7 +33,7 @@ class Config(object):
         self.from_dict(me_dict)
 
     def __str__(self):
-        return self.username + "@" + self.hostname
+        return "Config for {0}@{1}".format(self.username, self.hostname)
 
     def __repr__(self):
-        return "<pydndns.Config object hostname:" + self.hostname + " username: " + self.username + ">"    
+        return "<Config(hostname: {0}, username: {1})>".format(self.hostname, self.username)

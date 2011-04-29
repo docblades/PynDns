@@ -57,4 +57,17 @@ class ConfigFromFile(ConfigJSONTests):
         self.assertEqual("testuser4", self.config.username)
         self.assertEqual("testpass4", self.config.password)
 
+class Config_Repr(ConfigJSONTests):
+    def runTest(self):
+        self.config.hostname = "testhost5"
+        self.config.username = "testuser5"
 
+        self.assertIn("hostname: testhost5", repr(self.config))
+        self.assertIn("username: testuser5", repr(self.config))
+
+class Config_Str(ConfigJSONTests):
+    def runTest(self):
+        self.config.hostname = "testhost6"
+        self.config.username = "testuser6"
+
+        self.assertIn("testuser6@testhost6", str(self.config))

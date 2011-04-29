@@ -55,3 +55,4 @@ class DynDnsRequest_ValidateResponse_ErrorResponse(DynDnsRequestTestBase):
         t_resp = ["bar", "baz", "badauth", "nochg", "foo"]
 
         self.assertRaises(net.DynDnsResponseException, self.requester.validate_response, t_resp)
+

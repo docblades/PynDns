@@ -12,12 +12,26 @@ logger = logging.getLogger(__name__)
 URL_UPDATE = "https://members.dyndns.org:443/nic/update"
 URL_LIST = [URL_UPDATE]
 
+def has_ip_changed(hostname):
+    dns_ip = get_ip_by_dns(hostname)
+    this_ip = get_ip_from_dyndns()
+    return this_ip.strip() != dns_ip.strip()
 
 def get_ip_by_dns(hostname):
-    return gethostbyname(hostname)
+    return socket.gethostbyname(hostname)
+
+def get_ip_from_dyndns():
+    url = "http://checkip.dyndns.com"
+    response = urllib2.urlopen(url)
+    page = BeautifulSoup(response)
+    ip_match = re.match("Current IP Address: (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", page.body.text)
+    ip_addr = ip_match.group(1)
+    return ip_addr
 
 class DynDnsResponseException(Exception):
-    pass
+    def __init__(self, code, message):
+        self.message = "{0}: {1}".format(code, message)
+        self.code = code
 
 class DynDnsRequester(object):
     opener = None
@@ -84,8 +98,8 @@ class DynDnsRequester(object):
         for code in codes:
             if code in error_codes:
                 logger.error("Response from DynDns: '{0}'".format(code))
-                raise DynDnsResponseException("{0}: {1}".format(code, self.get_message_from_code(code)))
-            if code in warn_codes:
+                raise DynDnsResponseException(code, self.get_message_from_code(code))
+            elif code in warn_codes:
                 logger.warn("Response from DynDns: '{0}'".format(code))
                 return False
 
@@ -94,11 +108,12 @@ class DynDnsRequester(object):
     def get_message_from_code(self, code):
         if code in self.RESPONSE_CODES:
             return self.RESPONSE_CODES[code]
-        return str()
+        else:
+            return str()
     
     def parse_response(self, response):
         self.codes = []
         for code in response:
-            self.codes.append(code)
+            self.codes.append(code.strip())
 
         return self.codes
