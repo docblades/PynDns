@@ -1,9 +1,10 @@
 """
 PynDns network objects
 """
-import urllib2, pyndns
+import urllib2, pyndns, re
 from urllib import urlencode
 from dnslib import socket
+from BeautifulSoup import BeautifulSoup
 import pickle
 import logging
 

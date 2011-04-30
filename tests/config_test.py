@@ -71,3 +71,21 @@ class Config_Str(ConfigJSONTests):
         self.config.username = "testuser6"
 
         self.assertIn("testuser6@testhost6", str(self.config))
+
+class ConfigValidate_ReturnsTrueWhenRequiredValuesNotEmpty(ConfigJSONTests):
+    def runTest(self):
+        self.config.hostname = "testhost7"
+        self.config.username = "username7"
+        self.config.password = "password7"
+
+        self.assertTrue(self.config.validate())
+            
+class ConfigValidate_RaisesExceptionWhenRequiredValuesEmpty(ConfigJSONTests):
+    def runTest(self):
+        self.config.hostname = "testhost8"
+        self.config.username = "testuser8"
+
+        with self.assertRaises(data.InvalidConfiguration) as context:
+            self.config.validate()
+
+        

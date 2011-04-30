@@ -5,6 +5,17 @@ import json, sqlite3, logging
 
 logger = logging.getLogger(__name__)
 
+class InvalidConfiguration(Exception):
+    def __init__(self, config):
+        self.missing = []
+        if not config.hostname:
+            self.missing.append("hostname")
+        if not config.username:
+            self.missing.append("username")
+        if not config.password:
+            self.missing.append("password")
+        self.message = "Config missing requirements: {0}".format(self.missing)
+            
 class Config(object):
     hostname = None
     username = None
@@ -23,6 +34,7 @@ class Config(object):
         self.hostname = config_dict["hostname"]
         self.username = config_dict["username"]
         self.password = config_dict["password"]
+        self.validate()
 
     def from_json(self, json_string):
         me_dict = json.loads(json_string)
@@ -31,6 +43,12 @@ class Config(object):
     def from_file(self, config_file):
         me_dict = json.load(config_file)
         self.from_dict(me_dict)
+
+    def validate(self):
+        if self.hostname and self.username and self.password:
+            return True
+        else:
+            raise InvalidConfiguration(self)
 
     def __str__(self):
         return "Config for {0}@{1}".format(self.username, self.hostname)

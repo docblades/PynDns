@@ -36,7 +36,7 @@ class DynDnsRequest_BuildOpener(DynDnsRequestTestBase):
         Todo: Write a better test
         """
         opnr = self.requester.build_opener("testuser1", "testpass1")
-        self.assertEquals(opnr.__class__, urllib2.OpenerDirector)
+        self.assertIsInstance(opnr, urllib2.OpenerDirector)
 
 class DynDnsRequest_ValidateResponse_GoodResponse(DynDnsRequestTestBase):
     def runTest(self):
