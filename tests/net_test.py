@@ -56,3 +56,8 @@ class DynDnsRequest_ValidateResponse_ErrorResponse(DynDnsRequestTestBase):
 
         self.assertRaises(net.DynDnsResponseException, self.requester.validate_response, t_resp)
 
+class DynDnsRequest_GetMessageFromCode_ReturnsEmptyStringForUnknownCode(DynDnsRequestTestBase):
+    def runTest(self):
+        message = self.requester.get_message_from_code("notarealcode")
+
+        self.assertEqual('', message)

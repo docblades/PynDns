@@ -88,4 +88,15 @@ class ConfigValidate_RaisesExceptionWhenRequiredValuesEmpty(ConfigJSONTests):
         with self.assertRaises(data.InvalidConfiguration) as context:
             self.config.validate()
 
-        
+class InvalidConfiguration_SavesAListOfMissingConfigs(ConfigJSONTests):
+    def runTest(self):
+        self.config.hostname = None
+        self.config.username = None
+        self.config.password = None
+
+        ex = data.InvalidConfiguration(self.config)
+
+        expected_list = ["hostname", "username", "password"]
+        self.assertListEqual(expected_list, ex.missing)
+        for attr in expected_list:
+            self.assertIn(attr, ex.message)

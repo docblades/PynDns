@@ -13,15 +13,15 @@ logger = logging.getLogger(__name__)
 URL_UPDATE = "https://members.dyndns.org:443/nic/update"
 URL_LIST = [URL_UPDATE]
 
-def has_ip_changed(hostname):
+def has_ip_changed(hostname): #pragma: no cover
     dns_ip = get_ip_by_dns(hostname)
     this_ip = get_ip_from_dyndns()
     return this_ip.strip() != dns_ip.strip()
 
-def get_ip_by_dns(hostname):
+def get_ip_by_dns(hostname): #pragma: no cover
     return socket.gethostbyname(hostname)
 
-def get_ip_from_dyndns():
+def get_ip_from_dyndns(): #pragma: no cover
     url = "http://checkip.dyndns.com"
     response = urllib2.urlopen(url)
     page = BeautifulSoup(response)
@@ -83,7 +83,7 @@ class DynDnsRequester(object):
         logger.debug("Built url: {0}".format(upd_url))
         return upd_url
 
-    def update_ip(self, hostname, ipaddr):
+    def update_ip(self, hostname, ipaddr): #pragma: no cover
         upd_url = self.build_url(hostname, ipaddr)
         response = self.opener.open(upd_url)
         self.success = self.validate_response(response)
