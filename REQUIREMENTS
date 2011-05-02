@@ -2,4 +2,5 @@
 
 dnslib
 BeautifulSoup
-
+argparse
+PyYAML

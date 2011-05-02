@@ -61,7 +61,7 @@ class DynDnsRequester(object):
     
     def __init__(self, username, password):
         self.opener = self.build_opener(username, password)
-        logger.info("New DynDnsRequester for user: '{0}'".format(username))
+        logger.info("New DynDnsRequester for user: '%s'", username)
 
     def build_opener(self, username, password):
         pass_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
@@ -80,17 +80,20 @@ class DynDnsRequester(object):
                              "backmx": "NOCHG"})
         upd_url = "%(url)s?%(qstring)s" % {"url": URL_UPDATE,
                                          "qstring": qstring}
-        logger.debug("Built url: {0}".format(upd_url))
+        logger.debug("Built url: %s", upd_url)
         return upd_url
 
     def update_ip(self, hostname, ipaddr): #pragma: no cover
         upd_url = self.build_url(hostname, ipaddr)
         response = self.opener.open(upd_url)
+        logger.debug("Response: %s", response)
         self.success = self.validate_response(response)
         return self.success
 
     def validate_response(self, response):
         codes = self.parse_response(response)
+        logger.debug("Codes: %s", codes)
+        
         error_codes = ['badauth', '!donator', 'notfqdn',
                        'nohost', 'numhost', 'abuse',
                        'badagent', 'good 127.0.0.1']

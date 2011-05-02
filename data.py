@@ -21,6 +21,14 @@ class Config(object):
     username = None
     password = None
 
+    def from_args(self, args):
+        if args.hostname:
+            self.hostname = args.hostname
+        if args.username:
+            self.username = args.username
+        if args.password:
+            self.password = args.password
+
     def to_dict(self):
         me_dict = {"hostname": self.hostname,
                    "username": self.username,
