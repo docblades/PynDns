@@ -5,10 +5,8 @@ import urllib2, pyndns, re
 from urllib import urlencode
 from dnslib import socket
 from BeautifulSoup import BeautifulSoup
-import pickle
-import logging
+from config import logger
 
-logger = logging.getLogger(__name__)
 
 URL_UPDATE = "https://members.dyndns.org:443/nic/update"
 URL_LIST = [URL_UPDATE]

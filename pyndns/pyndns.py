@@ -5,11 +5,11 @@ April 25 2011
 """
 
 import logging, argparse, os, data, net, sys
+from config import logger
 from argparse import ArgumentParser, FileType
 
 HOME = os.getenv('HOME', '')
 VERSION = "PynDns 1.0"
-logger = logging.getLogger(__name__)
 DEFAULT_CONFIG_PATHS = [os.path.join(HOME, ".pyndns.conf"), os.path.join(HOME, '.pyndns', 'pyndns.conf'), "/etc/pyndns.conf"]
 
 class NoConfiguration(Exception):
@@ -35,7 +35,7 @@ def build_parser():
                         help='DynDns username*')
     parser.add_argument('--password', default=None,
                         help='DynDns password*')
-    parser.add_argument('--force-update', action='store_true', default=False,
+    parser.add_argument('--force', action='store_true', default=False,
                         help='Send update request, even if the IP has not changed.')
     return parser
 
@@ -69,7 +69,7 @@ def build_config(args):
 
 def do_update(config): #pragma: no cover
     request = net.DynDnsRequester(config.username, config.password)
-    success = request.update_ip(net.get_ip_from_dyndns())
+    success = request.update_ip(config.hostname, net.get_ip_from_dyndns())
     codes = dict(map(lambda a, b: (a, b), request.codes, request.messages))
     return success, codes
 
@@ -79,7 +79,7 @@ def main():
     if net.has_ip_changed(config.hostname):
         print "IP for {0} has changed. Sending update.".format(config.hostname)
         resp = do_update(config)
-    elif args.force-update:
+    elif args.force:
         print "IP for {0} has not changed. Sending update anyway (force-update)".format(config.hostname)
         resp = do_update(config)
     else:
@@ -97,5 +97,5 @@ def main():
 
 if __name__ == "__main__": #pragma: no cover
     logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.FileHandler("log.txt"))
+    logger.addHandler(logging.FileHandler("./log.txt", mode='a+'))
     sys.exit(main())

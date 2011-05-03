@@ -1,9 +1,9 @@
 """
 PynDns - Data persistence
 """
-import json, sqlite3, logging
+import json, sqlite3, logging, yaml
+from config import logger
 
-logger = logging.getLogger(__name__)
 
 class InvalidConfiguration(Exception):
     def __init__(self, config):
@@ -51,6 +51,9 @@ class Config(object):
     def from_file(self, config_file):
         me_dict = json.load(config_file)
         self.from_dict(me_dict)
+
+    def from_yaml(self, yaml):
+        pass
 
     def validate(self):
         if self.hostname and self.username and self.password:
