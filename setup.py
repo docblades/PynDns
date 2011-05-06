@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='Pyndns',
       version='0.1.0',
@@ -19,7 +19,6 @@ setup(name='Pyndns',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
         'Programming Language :: Python',
-        'Operating System :: OS Independent',
-        
+        'Operating System :: OS Independent'
         ]
       )
