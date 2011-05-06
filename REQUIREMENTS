@@ -1,6 +1,0 @@
-# I'll eventually convert this into a setup.py (so long as I don't get lazy)
-
-dnslib
-BeautifulSoup
-argparse
-PyYAML
