@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='Pyndns',
-      version='0.1.0',
+      version='0.1.0a',
       description='A Python DynDns update client',
       author='Christian Blades',
       author_email='christian.blades@docblades.com',
@@ -20,5 +20,6 @@ setup(name='Pyndns',
         'Topic :: Utilities',
         'Programming Language :: Python',
         'Operating System :: OS Independent'
-        ]
+        ],
+      requires=['BeautifulSoup(>=3.0)', 'dnslib', 'argparse']
       )
